@@ -11,11 +11,13 @@ public class Customer {
     private String county;
     private String dateOfBirth;
     private String gender;
-    private String phoneNumber;
+    private String phone;
     private String email;
 
     // Constructor (NO customerID parameter)
-    public Customer(String firstName, String surname, String address, String county, String dateOfBirth, String gender, String phoneNumber, String email) {
+    public Customer(String firstName, String surname, String address,
+                    String county, String dateOfBirth, String gender,
+                    String phoneNumber, String email) {
 
         this.customerID = nextCustomerID++; // auto-generate ID
         this.firstName = firstName;
@@ -24,24 +26,57 @@ public class Customer {
         this.county = county;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
-        this.phoneNumber = phoneNumber;
+        this.phone = phoneNumber;
         this.email = email;
     }
 
-    // Getter for ID
+    // Getter for customerID
     public int getCustomerID() {
         return customerID;
     }
 
-    // Display customer details
+    // Other getters (good practice for OOP)
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getCounty() {
+        return county;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public String getPhoneNumber() {
+        return phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    // Method to display customer details
     public String getCustomerDetails() {
-        return "Customer ID: " + customerID +
+        return "\nCustomer ID: " + customerID +
                 "\nName: " + firstName + " " + surname +
                 "\nAddress: " + address +
                 "\nCounty: " + county +
                 "\nDate of Birth: " + dateOfBirth +
                 "\nGender: " + gender +
-                "\nPhone: " + phoneNumber +
+                "\nPhone Number: " + phone +
                 "\nEmail: " + email;
     }
 }

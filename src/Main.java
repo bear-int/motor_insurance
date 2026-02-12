@@ -1,13 +1,50 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-void main() {
-  //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-  // to see how IntelliJ IDEA suggests fixing it.
-  IO.println(String.format("Hello and welcome!"));
+import java.util.Scanner;
 
-  for (int i = 1; i <= 5; i++) {
-    //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-    // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-    IO.println("i = " + i);
-  }
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter First Name: ");
+        String firstName = scanner.nextLine();
+
+        System.out.print("Enter Surname: ");
+        String surname = scanner.nextLine();
+
+        System.out.print("Enter Address: ");
+        String address = scanner.nextLine();
+
+        System.out.print("Enter County: ");
+        String county = scanner.nextLine();
+
+        System.out.print("Enter Date of Birth: ");
+        String dob = scanner.nextLine();
+
+        System.out.print("Enter Gender (Male/Female): ");
+        String gender = scanner.nextLine();
+
+        System.out.print("Enter Phone Number: ");
+        String phone = scanner.nextLine();
+
+        System.out.print("Enter Email: ");
+        String email = scanner.nextLine();
+
+        // Create Customer (ID auto-generated)
+        Customer customer = new Customer(
+                firstName,
+                surname,
+                address,
+                county,
+                dob,
+                gender,
+                phone,
+                email
+        );
+
+        System.out.println("\nCustomer Created Successfully!");
+        System.out.println(customer.getCustomerDetails());
+
+        scanner.close();
+    }
 }

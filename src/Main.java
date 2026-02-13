@@ -10,12 +10,11 @@ public class Main {
         do {
             System.out.println("\n==== Munster Motor Insurance ====");
             System.out.println("1. Add Customer");
-            System.out.println("2. Create Quotation");
-            System.out.println("3. Add Vehicle");
+            System.out.println("2. Add Vehicle");
+            System.out.println("3. Create Quotation");
             System.out.println("4. Create Policy");
             System.out.println("5. Generate Report");
-            System.out.println("6. Enter Registration");
-            System.out.println("7. Exit");
+            System.out.println("6. Exit");
             System.out.print("Enter choice: ");
 
             choice = scanner.nextInt();
@@ -52,39 +51,9 @@ public class Main {
                     System.out.println("\nCustomer Created Successfully!");
                     System.out.println(customer.getCustomerDetails());
                     break;
-                /*
+
                 case 2:
-                    System.out.print("Enter quotation amount: ");
-                    double amount = scanner.nextDouble();
-                    scanner.nextLine(); // clear buffer
-
-                    Quotation quotation = new Quotation(amount);
-                    System.out.println("\nQuotation Created!");
-                    System.out.println(quotation.getQuotationDetails());
-                    break;
-
-                case 3:
-                    System.out.print("Enter policy premium: ");
-                    double premium = scanner.nextDouble();
-                    scanner.nextLine(); // clear buffer
-
-                    Policy policy = new Policy(premium);
-                    System.out.println("\nPolicy Created!");
-                    System.out.println(policy.getPolicyDetails());
-                    break;
-
-                case 4:
-                    Reports report = new Reports();
-                    report.generateReport();
-                    break;
-
-                case 5:
-                    System.out.println("Exiting system...");
-                    break;
-
-                 */
-                case 6:
-                    System.out.print("Enter Registration: ");
+                    System.out.print("Add V2ehicle: ");
                     String reg = scanner.nextLine();
 
                     System.out.print("Enter Make: ");
@@ -103,11 +72,44 @@ public class Main {
                     System.out.println(vehicle.getDetails());
                     break;
 
+                       /*
+
+                case 3:
+                    System.out.print("Enter quotation amount: ");
+                    double amount = scanner.nextDouble();
+                    scanner.nextLine(); // clear buffer
+
+                    Quotation quotation = new Quotation(amount);
+                    System.out.println("\nQuotation Created!");
+                    System.out.println(quotation.getQuotationDetails());
+                    break;
+
+
+                case 4:
+                    System.out.print("Enter policy premium: ");
+                    double premium = scanner.nextDouble();
+                    scanner.nextLine(); // clear buffer
+
+                    Policy policy = new Policy(premium);
+                    System.out.println("\nPolicy Created!");
+                    System.out.println(policy.getPolicyDetails());
+                    break;
+
+                case 5:
+                    Reports report = new Reports();
+                    report.generateReport();
+                    break;
+
+                        */
+                case 6:
+                    System.out.println("Exiting system...");
+                    break;
+
                 default:
                     System.out.println("Invalid option.");
             }
 
-        } while (choice != 6);
+        } while (choice != 5);
 
         scanner.close();
     }

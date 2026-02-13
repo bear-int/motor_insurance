@@ -13,6 +13,8 @@ public class Customer {
     private String gender;
     private String phone;
     private String email;
+    private Vehicle vehicle;
+
 
     // Constructor (NO customerID parameter)
     public Customer(String firstName, String surname, String address,
@@ -79,4 +81,18 @@ public class Customer {
                 "\nPhone Number: " + phone +
                 "\nEmail: " + email;
     }
+
+   
+ public void setVehicle(Vehicle v){
+   this.vehicle = v;
 }
+
+    public void showVehicle(){
+    if(vehicle == null)
+        System.out.println("No vehicle added");
+    else
+        System.out.println(vehicle.getDetails());
+}
+
+}
+

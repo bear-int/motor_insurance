@@ -11,9 +11,11 @@ public class Main {
             System.out.println("\n==== Munster Motor Insurance ====");
             System.out.println("1. Add Customer");
             System.out.println("2. Create Quotation");
-            System.out.println("3. Create Policy");
-            System.out.println("4. Generate Report");
-            System.out.println("5. Exit");
+            System.out.println("3. Add Vehicle");
+            System.out.println("4. Create Policy");
+            System.out.println("5. Generate Report");
+            System.out.println("6. Enter Registration");
+            System.out.println("7. Exit");
             System.out.print("Enter choice: ");
 
             choice = scanner.nextInt();
@@ -81,12 +83,31 @@ public class Main {
                     break;
 
                  */
+                case 6:
+                    System.out.print("Enter Registration: ");
+                    String reg = scanner.nextLine();
+
+                    System.out.print("Enter Make: ");
+                    String make = scanner.nextLine();
+
+                    System.out.print("Enter Model: ");
+                    String model = scanner.nextLine();
+
+                    System.out.print("Enter Year: ");
+                    int year = scanner.nextInt();
+                    scanner.nextLine(); // clear buffer
+
+                    Vehicle vehicle = new Vehicle(reg, make, model, year);
+
+                    System.out.println("\nVehicle Created!");
+                    System.out.println(vehicle.getDetails());
+                    break;
 
                 default:
                     System.out.println("Invalid option.");
             }
 
-        } while (choice != 5);
+        } while (choice != 6);
 
         scanner.close();
     }

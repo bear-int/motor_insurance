@@ -1,4 +1,7 @@
 import java.util.Scanner;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class Main {
 
@@ -7,6 +10,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         int choice;
 
+        // menu
         do {
             System.out.println("\n==== Munster Motor Insurance ====");
             System.out.println("1. Add Customer");
@@ -23,37 +27,39 @@ public class Main {
             switch (choice) {
 
                 case 1:
-                    System.out.print("Enter First Name: ");
-                    String firstName = scanner.nextLine();
+                    String firstName = validateName(scanner, "First Name");
+                    String surname = validateName(scanner, "Surname");
+                    String address = validateAddress(scanner);
+                    String county = validateCounty(scanner);
+                    String dob = validateDOB(scanner);
+                    String phone = validatePhone(scanner);
+                    String email = validateEmail(scanner);
 
-                    System.out.print("Enter Surname: ");
-                    String surname = scanner.nextLine();
+                    System.out.print("Enter Gender (M/F): ");
+                    String genderInput = scanner.nextLine().trim().toUpperCase();
 
-                    System.out.print("Enter Address: ");
-                    String address = scanner.nextLine();
+                    boolean gender;
+                    if (genderInput.equals("M")) {
+                        gender = true;
+                    } else if (genderInput.equals("F")) {
+                        gender = false;
+                    } else {
+                        System.out.println("Invalid input. Please enter M or F.");
+                        return; // or repeat input using loop
+                    }
 
-                    System.out.print("Enter County: ");
-                    String county = scanner.nextLine();
+                    Customer customer = new Customer(
+                            firstName, surname, address,
+                            county, dob, gender,
+                            phone, email);
+                    customer.saveToFile();
 
-                    System.out.print("Enter DateOfBirth: ");
-                    String dateOfBirth = scanner.nextLine();
-
-                    System.out.print("Enter gender: ");
-                    String gender = scanner.nextLine();
-
-                    System.out.print("Enter Phone: ");
-                    String phone = scanner.nextLine();
-
-                    System.out.print("Enter Email: ");
-                    String email = scanner.nextLine();
-
-                    Customer customer = new Customer(firstName, surname, address, county, dateOfBirth, gender, phone, email);
                     System.out.println("\nCustomer Created Successfully!");
                     System.out.println(customer.getCustomerDetails());
                     break;
 
                 case 2:
-                    System.out.print("Add V2ehicle: ");
+                    System.out.print("Add V21ehicle: ");
                     String reg = scanner.nextLine();
 
                     System.out.print("Enter Make: ");
@@ -113,4 +119,148 @@ public class Main {
 
         scanner.close();
     }
+
+    // Validation methods
+
+    private static String validateName(Scanner scanner, String fieldName) {
+        String input;
+
+        while (true) {
+            System.out.print("Enter " + fieldName + ": ");
+            input = scanner.nextLine().trim();
+
+            if (!input.matches("[A-Za-z]+")) {
+                System.out.println(fieldName + " cannot contain numbers or special characters.");
+                continue;
+            }
+
+            if (!Character.isUpperCase(input.charAt(0))) {
+                System.out.println(fieldName + " must start with a capital letter.");
+                continue;
+            }
+
+            if (input.length() < 2 || input.length() > 20) {
+                System.out.println(fieldName + " must be between 2 and 20 characters.");
+                continue;
+            }
+
+            return input;
+        }
+    }
+
+    private static String validateAddress(Scanner scanner) {
+        String input;
+        while (true) {
+            System.out.print("Enter Address: ");
+            input = scanner.nextLine();
+
+            if (input.matches("[a-zA-Z0-9\\s]{5,50}")) {
+                return input;
+            } else {
+                System.out.println("Invalid Address (5–50 letters/numbers only).");
+            }
+        }
+    }
+    private static String validateCounty(Scanner scanner) {
+        String input;
+        while (true) {
+            System.out.print("Enter County (Example: Roscrea co Tipperary): ");
+            input = scanner.nextLine();
+
+            if (input.matches("[A-Z][a-zA-Z]+\\sco\\s[A-Z][a-zA-Z]+")) {
+                return input;
+            } else {
+                System.out.println("Invalid County format.");
+            }
+        }
+    }
+    private static String validateDOB(Scanner scanner) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        while (true) {
+            System.out.print("Enter Date of Birth (dd/MM/yyyy): ");
+            String input = scanner.nextLine();
+
+            try {
+                LocalDate dob = LocalDate.parse(input, formatter);
+
+                if (dob.isAfter(LocalDate.now())) {
+                    System.out.println("Date of Birth cannot be in the future.");
+                    continue;
+                }
+
+                return dob.toString();
+
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid date. Please enter a real calendar date.");
+            }
+        }
+    }
+
+    private static boolean validateGender(Scanner scanner) {
+        while (true) {
+            System.out.print("Enter Gender (M/F): ");
+            String input = scanner.nextLine().trim().toUpperCase();
+
+            if (input.equals("M")) {
+                return true;
+            } else if (input.equals("F")) {
+                return false;
+            } else {
+                System.out.println("Invalid input. Please enter M or F only.");
+            }
+        }
+    }
+
+    private static String validatePhone(Scanner scanner) {
+        String countryCode;
+        String number;
+
+        while (true) {
+            System.out.println("Select Country Code:");
+            System.out.println("1. +353 (Ireland)");
+            System.out.println("2. +44 (UK)");
+            System.out.print("Choice: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            if (choice == 1) {
+                countryCode = "+353";
+            } else if (choice == 2) {
+                countryCode = "+44";
+            } else {
+                System.out.println("Invalid choice.");
+                continue;
+            }
+
+            System.out.print("Enter Phone Number (7–10 digits): ");
+            number = scanner.nextLine();
+
+            if (number.matches("\\d{7,10}")) {
+                return countryCode + number;
+            } else {
+                System.out.println("Invalid phone number.");
+            }
+        }
+    }
+    private static String validateEmail(Scanner scanner) {
+        String emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+
+        while (true) {
+            System.out.print("Enter Email: ");
+            String input = scanner.nextLine().trim();
+
+            if (input.matches(emailPattern)) {
+                return input;
+            } else {
+                System.out.println("Invalid email format (example: name@email.com)");
+            }
+        }
+    }
+
+
+
+
+
 }

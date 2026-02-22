@@ -3,22 +3,30 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import java.util.ArrayList;
+
 public class Main {
+
+    private static ArrayList<Customer> customers = new ArrayList<>();
 
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
+
         int choice;
+
 
         // menu
         do {
             System.out.println("\n==== Munster Motor Insurance ====");
             System.out.println("1. Add Customer");
-            System.out.println("2. Add Vehicle");
-            System.out.println("3. Create Quotation");
-            System.out.println("4. Create Policy");
-            System.out.println("5. Generate Report");
-            System.out.println("6. Exit");
+            System.out.println("2. Search Customer");
+            System.out.println("3. Add Vehicle");
+            System.out.println("4. Search Vehicle");
+            System.out.println("5. Create Quotation");
+            System.out.println("6. Create Policy");
+            System.out.println("7. Generate Report");
+            System.out.println("8. Exit");
             System.out.print("Enter choice: ");
 
             choice = scanner.nextInt();
@@ -34,32 +42,56 @@ public class Main {
                     String dob = validateDOB(scanner);
                     String phone = validatePhone(scanner);
                     String email = validateEmail(scanner);
-
-                    System.out.print("Enter Gender (M/F): ");
-                    String genderInput = scanner.nextLine().trim().toUpperCase();
-
-                    boolean gender;
-                    if (genderInput.equals("M")) {
-                        gender = true;
-                    } else if (genderInput.equals("F")) {
-                        gender = false;
-                    } else {
-                        System.out.println("Invalid input. Please enter M or F.");
-                        return; // or repeat input using loop
-                    }
+                    boolean gender = validateGender(scanner);
 
                     Customer customer = new Customer(
                             firstName, surname, address,
                             county, dob, gender,
                             phone, email);
                     customer.saveToFile();
+                    customers.add(customer);
 
                     System.out.println("\nCustomer Created Successfully!");
                     System.out.println(customer.getCustomerDetails());
                     break;
 
-                case 2:
-                    System.out.print("Add V21ehicle: ");
+
+                case 2: // Search Customer
+                    System.out.println("\nSearch By:");
+                    System.out.println("1. Customer ID");
+                    System.out.println("2. First Name");
+                    System.out.println("3. Surname");
+                    System.out.println("4. Email");
+                    System.out.print("Choose option: ");
+
+                    int searchOption = scanner.nextInt();
+                    scanner.nextLine();
+
+                    String searchValue;
+                    if (searchOption == 1) {
+                        // Ask user to enter 2 digits Customer ID
+                        System.out.print("Enter 2-digit Customer ID (e.g., 01, 14, 73): ");
+                        String idInput = scanner.nextLine().trim();
+
+                        // Validate input
+                        while (!idInput.matches("\\d{2}")) {
+                            System.out.print("Invalid input. Enter exactly 2 digits (e.g., 01, 14, 73): ");
+                            idInput = scanner.nextLine().trim();
+                        }
+                        // Construct full ID in CUST-00XX format
+                        searchValue = "CUST-00" + idInput;
+                    } else {
+                        System.out.print("Enter search value: ");
+                        searchValue = scanner.nextLine().trim();
+                    }
+
+                    searchCustomer(searchOption, searchValue);
+                    break;
+
+
+                case 3: // Add Vehicle
+
+                    System.out.print("Enter Vehicle Reg: ");
                     String reg = scanner.nextLine();
 
                     System.out.print("Enter Make: ");
@@ -70,7 +102,7 @@ public class Main {
 
                     System.out.print("Enter Year: ");
                     int year = scanner.nextInt();
-                    scanner.nextLine(); // clear buffer
+                    scanner.nextLine();
 
                     Vehicle vehicle = new Vehicle(reg, make, model, year);
 
@@ -78,9 +110,11 @@ public class Main {
                     System.out.println(vehicle.getDetails());
                     break;
 
+
+
                        /*
 
-                case 3:
+                case 5:
                     System.out.print("Enter quotation amount: ");
                     double amount = scanner.nextDouble();
                     scanner.nextLine(); // clear buffer
@@ -91,7 +125,7 @@ public class Main {
                     break;
 
 
-                case 4:
+                case 6:
                     System.out.print("Enter policy premium: ");
                     double premium = scanner.nextDouble();
                     scanner.nextLine(); // clear buffer
@@ -107,15 +141,16 @@ public class Main {
                     break;
 
                         */
-                case 6:
+                case 8:
                     System.out.println("Exiting system...");
                     break;
+
 
                 default:
                     System.out.println("Invalid option.");
             }
 
-        } while (choice != 5);
+        } while (choice != 8);
 
         scanner.close();
     }
@@ -161,6 +196,7 @@ public class Main {
             }
         }
     }
+
     private static String validateCounty(Scanner scanner) {
         String input;
         while (true) {
@@ -174,6 +210,7 @@ public class Main {
             }
         }
     }
+
     private static String validateDOB(Scanner scanner) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -200,14 +237,14 @@ public class Main {
     private static boolean validateGender(Scanner scanner) {
         while (true) {
             System.out.print("Enter Gender (M/F): ");
-            String input = scanner.nextLine().trim().toUpperCase();
+            String genderInput = scanner.nextLine().trim().toUpperCase();
 
-            if (input.equals("M")) {
+            if (genderInput.equals("M")) {
                 return true;
-            } else if (input.equals("F")) {
+            } else if (genderInput.equals("F")) {
                 return false;
             } else {
-                System.out.println("Invalid input. Please enter M or F only.");
+                System.out.println("Invalid input. Please enter M or F.");
             }
         }
     }
@@ -244,6 +281,7 @@ public class Main {
             }
         }
     }
+
     private static String validateEmail(Scanner scanner) {
         String emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
 
@@ -259,8 +297,88 @@ public class Main {
         }
     }
 
+    public static Customer findCustomerByID(String id) {
+        for (Customer c : customers) {
+            if (c.getCustomerID().equalsIgnoreCase(id)) {
+                return c;
+            }
+        }
+        return null;
+    }
+
+
+    private static void searchCustomer(int option, String value) {
+
+        boolean found = false;
+
+        try (Scanner fileScanner = new Scanner(new java.io.File("customers.txt"))) {
+
+            while (fileScanner.hasNextLine()) {
+
+                String line = fileScanner.nextLine();
+                String[] data = line.split(",");
+
+                String id = data[0];
+                String firstName = data[1];
+                String surname = data[2];
+                String email = data[7];
+                String phone = data[6];
+
+                switch (option) {
+
+                    case 1: // Search by Customer ID (2 digits)
+                        String searchID = "CUST-00" + value;
+                        if (id.equalsIgnoreCase(value)) {
+                            System.out.println(line);
+                            found = true;
+                        }
+                        break;
+
+                    case 2: // First Name
+                        if (firstName.equalsIgnoreCase(value)) {
+                            System.out.println(line);
+                            found = true;
+                        }
+                        break;
+
+                    case 3: // Surname
+                        if (surname.equalsIgnoreCase(value)) {
+                            System.out.println(line);
+                            found = true;
+                        }
+                        break;
+
+                    case 4: // Email
+                        if (email.equalsIgnoreCase(value)) {
+                            System.out.println(line);
+                            found = true;
+                        }
+                        break;
+
+                    case 5: // Phone Number
+                        if (phone.equalsIgnoreCase(value)) {
+                            System.out.println(line);
+                            found = true;
+                        }
+                        break;
+
+                    default:
+                        System.out.println("Invalid search option.");
+                        return;
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+
+        if (!found) {
+            System.out.println("No matching customer found.");
+        }
+    }  // closes searchCustomer method
+}  //  closes Main class
 
 
 
 
-}
+

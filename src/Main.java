@@ -1,9 +1,12 @@
-import java.util.Scanner;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-
 import java.util.ArrayList;
+import java.util.Scanner;
+
 
 public class Main {
 
@@ -14,7 +17,6 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         int choice;
-
 
         // menu
         do {
@@ -88,32 +90,64 @@ public class Main {
                     searchCustomer(searchOption, searchValue);
                     break;
 
-
-                case 3: // Add Vehicle
-
-                    System.out.print("Enter Vehicle Reg: ");
-                    String reg = scanner.nextLine();
-
-                    System.out.print("Enter Make: ");
-                    String make = scanner.nextLine();
-
-                    System.out.print("Enter Model: ");
-                    String model = scanner.nextLine();
-
-                    System.out.print("Enter Year: ");
-                    int year = scanner.nextInt();
-                    scanner.nextLine();
+                case 3: // Add Vehicle (with beginner-friendly validation)
+                    String reg = validateVehicleReg(scanner);
+                    String make = validateVehicleMake(scanner);
+                    String model = validateVehicleModel(scanner);
+                    int year = validateVehicleYear(scanner);
 
                     Vehicle vehicle = new Vehicle(reg, make, model, year);
 
-                    System.out.println("\nVehicle Created!");
+                    // Save to vehicle.txt
+                    try (java.io.FileWriter writer = new java.io.FileWriter("vehicle.txt", true)) {
+                        writer.write(vehicle.reg + "," + vehicle.make + "," + vehicle.model + "," + vehicle.year + "\n");
+                    } catch (Exception e) {
+                        System.out.println("Error saving vehicle: " + e.getMessage());
+                    }
+
+                    System.out.println("\nVehicle Created and Saved!");
                     System.out.println(vehicle.getDetails());
                     break;
 
+                case 4: // Search Vehicle
+                    System.out.println("\nSearch Vehicle By:");
+                    System.out.println("1. Registration");
+                    System.out.println("2. Make");
+                    System.out.println("3. Model");
+                    System.out.print("Choose option: ");
+                    int vehicleOption = scanner.nextInt();
+                    scanner.nextLine();
 
+                    System.out.print("Enter search value: ");
+                    String vehicleSearch = scanner.nextLine().trim();
 
-                       /*
+                    boolean vehicleFound = false;
 
+                    try (Scanner fileScanner = new Scanner(new java.io.File("vehicle.txt"))) {
+                        while (fileScanner.hasNextLine()) {
+                            String line = fileScanner.nextLine();
+                            String[] data = line.split(",");
+                            String vReg = data[0];
+                            String vMake = data[1];
+                            String vModel = data[2];
+
+                            switch (vehicleOption) {
+                                case 1: if (vReg.equalsIgnoreCase(vehicleSearch)) vehicleFound = true; break;
+                                case 2: if (vMake.equalsIgnoreCase(vehicleSearch)) vehicleFound = true; break;
+                                case 3: if (vModel.equalsIgnoreCase(vehicleSearch)) vehicleFound = true; break;
+                            }
+
+                            if (vehicleFound) {
+                                System.out.println(line);
+                                vehicleFound = false; // reset for next match
+                            }
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Error reading vehicle file: " + e.getMessage());
+                    }
+                    break;
+
+                /*
                 case 5:
                     System.out.print("Enter quotation amount: ");
                     double amount = scanner.nextDouble();
@@ -123,7 +157,6 @@ public class Main {
                     System.out.println("\nQuotation Created!");
                     System.out.println(quotation.getQuotationDetails());
                     break;
-
 
                 case 6:
                     System.out.print("Enter policy premium: ");
@@ -139,12 +172,11 @@ public class Main {
                     Reports report = new Reports();
                     report.generateReport();
                     break;
+                */
 
-                        */
                 case 8:
                     System.out.println("Exiting system...");
                     break;
-
 
                 default:
                     System.out.println("Invalid option.");
@@ -159,7 +191,6 @@ public class Main {
 
     private static String validateName(Scanner scanner, String fieldName) {
         String input;
-
         while (true) {
             System.out.print("Enter " + fieldName + ": ");
             input = scanner.nextLine().trim();
@@ -297,6 +328,60 @@ public class Main {
         }
     }
 
+    // Vehicle Validation
+    private static String validateVehicleReg(Scanner scanner) {
+        while (true) {
+            System.out.print("Enter Vehicle Registration (e.g., AB1234): ");
+            String reg = scanner.nextLine().trim().toUpperCase();
+            if (reg.matches("[A-Z]{1,3}\\d{1,4}")) {
+                return reg;
+            } else {
+                System.out.println("Invalid registration format. Only letters followed by numbers allowed.");
+            }
+        }
+    }
+
+    private static String validateVehicleMake(Scanner scanner) {
+        while (true) {
+            System.out.print("Enter Vehicle Make: ");
+            String make = scanner.nextLine().trim();
+            if (make.matches("[A-Z][a-zA-Z]{1,20}")) {
+                return make;
+            } else {
+                System.out.println("Invalid make. Start with capital letter, letters only.");
+            }
+        }
+    }
+
+    private static String validateVehicleModel(Scanner scanner) {
+        while (true) {
+            System.out.print("Enter Vehicle Model: ");
+            String model = scanner.nextLine().trim();
+            if (model.matches("[A-Z0-9][a-zA-Z0-9]{0,19}")) {
+                return model;
+            } else {
+                System.out.println("Invalid model. Start with capital letter or number, max 20 chars.");
+            }
+        }
+    }
+
+    private static int validateVehicleYear(Scanner scanner) {
+        int currentYear = LocalDate.now().getYear();
+        while (true) {
+            System.out.print("Enter Vehicle Year: ");
+            try {
+                int year = Integer.parseInt(scanner.nextLine().trim());
+                if (year >= 1900 && year <= currentYear) {
+                    return year;
+                } else {
+                    System.out.println("Invalid year. Must be between 1900 and " + currentYear);
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number.");
+            }
+        }
+    }
+
     public static Customer findCustomerByID(String id) {
         for (Customer c : customers) {
             if (c.getCustomerID().equalsIgnoreCase(id)) {
@@ -305,7 +390,6 @@ public class Main {
         }
         return null;
     }
-
 
     private static void searchCustomer(int option, String value) {
 
@@ -375,8 +459,13 @@ public class Main {
         if (!found) {
             System.out.println("No matching customer found.");
         }
-    }  // closes searchCustomer method
-}  //  closes Main class
+    }
+}
+
+
+
+
+
 
 
 

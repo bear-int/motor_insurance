@@ -1,6 +1,9 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class Customer {
 
@@ -77,6 +80,37 @@ public class Customer {
     else
         System.out.println(vehicle.getDetails());
     }
+
+    // method that reads customers.txt
+    public static void initializeCustomerID() {
+
+        int maxID = 0;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("customers.txt"))) {
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+
+                String[] parts = line.split(",");
+                String idPart = parts[0]; // CUST-0003
+
+                int number = Integer.parseInt(idPart.substring(5)); // 0003 → 3
+
+                if (number > maxID) {
+                    maxID = number;
+                }
+            }
+
+        } catch (IOException e) {
+            // File may not exist yet — that's OK
+        }
+
+        nextCustomerID = maxID + 1;
+    }
+
+
+
+
 
     public void saveToFile() {
 

@@ -2,15 +2,16 @@ import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-
 import java.util.ArrayList;
 
 public class Main {
+
 
     private static ArrayList<Customer> customers = new ArrayList<>();
 
     public static void main(String[] args) {
 
+        Customer.initializeCustomerID();
         Scanner scanner = new Scanner(System.in);
 
         int choice;
@@ -212,6 +213,7 @@ public class Main {
     }
 
     private static String validateDOB(Scanner scanner) {
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         while (true) {
@@ -220,13 +222,22 @@ public class Main {
 
             try {
                 LocalDate dob = LocalDate.parse(input, formatter);
+                LocalDate today = LocalDate.now();
 
-                if (dob.isAfter(LocalDate.now())) {
+                if (dob.isAfter(today)) {
                     System.out.println("Date of Birth cannot be in the future.");
                     continue;
                 }
 
-                return dob.toString();
+                // Calculate age
+                int age = java.time.Period.between(dob, today).getYears();
+
+                if (age < 18) {
+                    System.out.println("Customer must be at least 18 years old.");
+                    continue;
+                }
+
+                return dob.toString();  // store in ISO format (yyyy-MM-dd)
 
             } catch (DateTimeParseException e) {
                 System.out.println("Invalid date. Please enter a real calendar date.");
@@ -305,6 +316,10 @@ public class Main {
         }
         return null;
     }
+
+
+
+
 
 
     private static void searchCustomer(int option, String value) {

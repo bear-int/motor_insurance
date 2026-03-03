@@ -790,10 +790,9 @@ public class Main {
             while (fileScanner.hasNextLine()) {
 
                 String line = fileScanner.nextLine();
-                System.out.println("DEBUG LINE: " + line);
-
                 String[] data = line.split(",");
-                System.out.println("Fields count: " + data.length);
+
+                if (data.length < 5) continue;
 
                 String vehicleID = data[0];
                 String reg = data[1];
@@ -804,19 +803,19 @@ public class Main {
 
                 switch (option) {
 
-                    case 1: // Vehicle ID
+                    case 1:
                         if (vehicleID.equalsIgnoreCase(value)) match = true;
                         break;
 
-                    case 2: // Registration
+                    case 2:
                         if (reg.equalsIgnoreCase(value)) match = true;
                         break;
 
-                    case 3: // Make
+                    case 3:
                         if (make.equalsIgnoreCase(value)) match = true;
                         break;
 
-                    case 4: // Model
+                    case 4:
                         if (model.equalsIgnoreCase(value)) match = true;
                         break;
 
@@ -829,7 +828,6 @@ public class Main {
 
                     System.out.println("\nVehicle Found:");
                     System.out.println(line);
-
                     found = true;
 
                     Scanner inputScanner = new Scanner(System.in);
@@ -839,6 +837,8 @@ public class Main {
                     if (editChoice.equals("Y")) {
                         editVehicle(data);
                     }
+
+                    break; // stop after first match
                 }
             }
 
@@ -850,7 +850,6 @@ public class Main {
             System.out.println("No matching vehicle found.");
         }
     }
-
 
 
 

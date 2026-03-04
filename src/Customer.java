@@ -16,6 +16,7 @@ public class Customer {
     private String surname;
     private String address;
     private String county;
+    private String town;
     private String dateOfBirth;
     private boolean gender;  // true = Male, false = Female
     private String phone;
@@ -35,7 +36,7 @@ public class Customer {
     // Constructor (NO customerID parameter)
 
     public Customer(String firstName, String surname, String address,
-                    String county, String dateOfBirth, boolean gender,
+                    String county, String town, String dateOfBirth, boolean gender,
                     String phoneNumber, String email) {
 
         this.customerID = String.format("CUST-%04d", nextCustomerID++);
@@ -43,6 +44,7 @@ public class Customer {
         this.surname = surname;
         this.address = address;
         this.county = county;
+        this.town = town;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
         this.phone = phoneNumber;
@@ -50,7 +52,7 @@ public class Customer {
     }
 
     public Customer(String customerID, String firstName, String surname,
-                    String address, String county, String dateOfBirth,
+                    String address, String county, String town, String dateOfBirth,
                     boolean gender, String phoneNumber, String email) {
 
         this.customerID = customerID;
@@ -89,6 +91,13 @@ public class Customer {
         return gender ? "Male" : "Female";
     }
 
+    public String getCounty(){
+        return county;
+    }
+
+
+
+
     // Method to display customer details
     public String getCustomerDetails() {
 
@@ -96,6 +105,7 @@ public class Customer {
                 "\nName: " + firstName + " " + surname +
                 "\nAddress: " + address +
                 "\nCounty: " + county +
+                "\nTown: " + town +
                 "\nDate of Birth: " + dateOfBirth +
                 "\nGender: " + (gender ? "Male" : "Female") +
                 "\nPhone Number: " + phone +
@@ -154,9 +164,6 @@ public class Customer {
     }
 
 
-
-
-
     public void saveToFile() {
 
         String genderLetter = gender ? "M" : "F";
@@ -165,6 +172,7 @@ public class Customer {
                 surname + "," +
                 address + "," +
                 county + "," +
+                town + "," +
                 dateOfBirth + "," +
                 phone + "," +
                 email + "," +

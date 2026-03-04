@@ -1,0 +1,654 @@
+==== Munster Motor Insurance ====
+1. Add Customer
+2. Search/Edit Customer
+3. Add Vehicle
+4. Search/Edit Vehicle
+5. Generate Quotation
+6. Search Quotation
+7. Create Policy / Certificate
+8. Extend Policy
+9. Generate Report
+10. Exit
+Enter choice: 5
+Enter Customer ID: CUST-0001
+Enter Vehicle Registration: 18WD2
+Insurance Category:
+1. Fully Comprehensive
+2. Third Party Fire and Theft
+2
+
+QUOTATION GENERATED & SAVED
+
+========= MOTOR INSURANCE QUOTATION =========
+Quotation ID: QUOT-0002
+Customer ID: CUST-0001
+Customer Name: John Ryan
+Customer Age: 37
+Gender: Male
+Vehicle: CAR-0004 18WD2 Toyota Avensis 2009
+--------------------------------------------
+Base Premium: €2000.0
+Age Adjustment: €1300.0
+County Adjustment: €50.0
+Vehicle Adjustment: €0.0
+Emission Adjustment: €-55.0
+Insurance Type Adjustment: €-120.0
+--------------------------------------------
+Final Premium: €700.0
+============================================
+
+==== Munster Motor Insurance ====
+1. Add Customer
+2. Search/Edit Customer
+3. Add Vehicle
+4. Search/Edit Vehicle
+5. Generate Quotation
+6. Search Quotation
+7. Create Policy / Certificate
+8. Extend Policy
+9. Generate Report
+10. Exit
+Enter choice: 5
+Enter Customer ID: CUST-0008
+Enter Vehicle Registration: 132MH1191
+Insurance Category:
+1. Fully Comprehensive
+2. Third Party Fire and Theft
+1
+
+QUOTATION GENERATED & SAVED
+
+========= MOTOR INSURANCE QUOTATION =========
+Quotation ID: QUOT-0003
+Customer ID: CUST-0008
+Customer Name: Clara Burbot
+Customer Age: 24
+Gender: Female
+Vehicle: CAR-0006 132MH1191 BMW X6 2015
+--------------------------------------------
+Base Premium: €800.0
+Age Adjustment: €320.0
+County Adjustment: €50.0
+Vehicle Adjustment: €0.0
+Emission Adjustment: €150.0
+Insurance Type Adjustment: €200.0
+--------------------------------------------
+Final Premium: €1180.0
+============================================
+
+==== Munster Motor Insurance ====
+1. Add Customer
+2. Search/Edit Customer
+3. Add Vehicle
+4. Search/Edit Vehicle
+5. Generate Quotation
+6. Search Quotation
+7. Create Policy / Certificate
+8. Extend Policy
+9. Generate Report
+10. Exit
+Enter choice: 5
+Enter Customer ID: CUST-0003
+Enter Vehicle Registration: 163D1884
+Insurance Category:
+1. Fully Comprehensive
+2. Third Party Fire and Theft
+1
+
+QUOTATION GENERATED & SAVED
+
+========= MOTOR INSURANCE QUOTATION =========
+Quotation ID: QUOT-0004
+Customer ID: CUST-0003
+Customer Name: Alexa Jemeson
+Customer Age: 42
+Gender: Female
+Vehicle: CAR-0001 163D1884 Opel Corsa 2016
+--------------------------------------------
+Base Premium: €800.0
+Age Adjustment: €520.0
+County Adjustment: €-100.0
+Vehicle Adjustment: €50.0
+Emission Adjustment: €300.0
+Insurance Type Adjustment: €200.0
+--------------------------------------------
+Final Premium: €730.0
+============================================
+
+==== Munster Motor Insurance ====
+1. Add Customer
+2. Search/Edit Customer
+3. Add Vehicle
+4. Search/Edit Vehicle
+5. Generate Quotation
+6. Search Quotation
+7. Create Policy / Certificate
+8. Extend Policy
+9. Generate Report
+10. Exit
+Enter choice: 5
+Enter Customer ID: CUST-0009
+Enter Vehicle Registration: 562C50
+Insurance Category:
+1. Fully Comprehensive
+2. Third Party Fire and Theft
+2
+
+QUOTATION GENERATED & SAVED
+
+========= MOTOR INSURANCE QUOTATION =========
+Quotation ID: QUOT-0005
+Customer ID: CUST-0009
+Customer Name: Martin Cruger
+Customer Age: 22
+Gender: Male
+Vehicle: CAR-0002 562C50 Toyota Corolla 2010
+--------------------------------------------
+Base Premium: €2000.0
+Age Adjustment: €800.0
+County Adjustment: €225.0
+Vehicle Adjustment: €0.0
+Emission Adjustment: €150.0
+Insurance Type Adjustment: €-120.0
+--------------------------------------------
+Final Premium: €1555.0
+============================================
+
+==== Munster Motor Insurance ====
+1. Add Customer
+2. Search/Edit Customer
+3. Add Vehicle
+4. Search/Edit Vehicle
+5. Generate Quotation
+6. Search Quotation
+7. Create Policy / Certificate
+8. Extend Policy
+9. Generate Report
+10. Exit
+Enter choice: 1
+Enter First Name: Ketrin
+Enter Surname: Smidt
+Enter Address: Millennium Park
+Enter County: Kerry
+Enter Town/City/Village: Kerry
+Enter Date of Birth (dd/MM/yyyy): 20/06/2006
+Customer Age: 19
+Select Country Code:
+1. +353 (Ireland)
+2. +44 (UK)
+Choice: 1
+Enter Phone Number (7–10 digits): 830631975
+Enter Email: ketrin@yahoo.com
+Enter Gender (M/F): F
+Customer saved to file successfully!
+
+Customer Created Successfully!
+
+Customer ID: CUST-0010
+Name: Ketrin Smidt
+Address: Millennium Park
+County: Kerry
+Town: Kerry
+Date of Birth: 2006-06-20
+Gender: Female
+Phone Number: +353830631975
+Email: ketrin@yahoo.com
+Calculated Age: 19
+
+==== Munster Motor Insurance ====
+1. Add Customer
+2. Search/Edit Customer
+3. Add Vehicle
+4. Search/Edit Vehicle
+5. Generate Quotation
+6. Search Quotation
+7. Create Policy / Certificate
+8. Extend Policy
+9. Generate Report
+10. Exit
+Enter choice: 5
+Enter Customer ID: CUST-0010
+Enter Vehicle Registration: 18WD2
+Insurance Category:
+1. Fully Comprehensive
+2. Third Party Fire and Theft
+1
+
+QUOTATION GENERATED & SAVED
+
+========= MOTOR INSURANCE QUOTATION =========
+Quotation ID: QUOT-0006
+Customer ID: CUST-0010
+Customer Name: Ketrin Smidt
+Customer Age: 19
+Gender: Female
+Vehicle: CAR-0004 18WD2 Toyota Avensis 2009
+--------------------------------------------
+Base Premium: €800.0
+Age Adjustment: €160.0
+County Adjustment: €50.0
+Vehicle Adjustment: €0.0
+Emission Adjustment: €-55.0
+Insurance Type Adjustment: €200.0
+--------------------------------------------
+Final Premium: €1280.0
+============================================
+
+==== Munster Motor Insurance ====
+1. Add Customer
+2. Search/Edit Customer
+3. Add Vehicle
+4. Search/Edit Vehicle
+5. Generate Quotation
+6. Search Quotation
+7. Create Policy / Certificate
+8. Extend Policy
+9. Generate Report
+10. Exit
+Enter choice: 
+
+
+
+/home/bear/.jdks/openjdk-25.0.2/bin/java -javaagent:/opt/idea-IU-252.25557.131/lib/idea_rt.jar=41799 -Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 -classpath /home/bear/Desktop/COLLEGE/Software Architecture/Motor_insurance/Motor_insurance/out/production/Motor_insurance Main
+
+==== Munster Motor Insurance ====
+1. Add Customer
+2. Search/Edit Customer
+3. Add Vehicle
+4. Search/Edit Vehicle
+5. Generate Quotation
+6. Search Quotation
+7. Create Policy / Certificate
+8. Extend Policy
+9. Generate Report
+10. Exit
+Enter choice: 3
+Enter Vehicle Registration (e.g., 162MO1185): 132C40
+Enter Make: Renault
+Enter Model: Fleuence
+Enter Year: 1999
+Select Emission Level:
+1. High
+2. Medium
+3. Low
+Choice: 1
+
+Vehicle Created!
+CAR-0008 132C40 Renault Fleuence 1999
+
+==== Munster Motor Insurance ====
+1. Add Customer
+2. Search/Edit Customer
+3. Add Vehicle
+4. Search/Edit Vehicle
+5. Generate Quotation
+6. Search Quotation
+7. Create Policy / Certificate
+8. Extend Policy
+9. Generate Report
+10. Exit
+Enter choice: 5CUST-0010
+Enter Customer ID: CUST-0010
+Enter Vehicle Registration: CAR-0008
+Insurance Category:
+1. Fully Comprehensive
+2. Third Party Fire and Theft
+1
+
+QUOTATION GENERATED & SAVED
+
+========= MOTOR INSURANCE QUOTATION =========
+Quotation ID: QUOT-0011
+Customer ID: CUST-0010
+Customer Name: Ketrin Smidt
+Customer Age: 19
+Gender: Female
+Vehicle: CAR-0008 132C40 Renault Fleuence 1999
+--------------------------------------------
+Base Premium: €800.0
+Age Adjustment: €160.0
+County Adjustment: €50.0
+Vehicle Adjustment: €0.0
+Emission Adjustment: €300.0
+Insurance Type Adjustment: €200.0
+--------------------------------------------
+Final Premium: €1510.0
+============================================
+
+==== Munster Motor Insurance ====
+1. Add Customer
+2. Search/Edit Customer
+3. Add Vehicle
+4. Search/Edit Vehicle
+5. Generate Quotation
+6. Search Quotation
+7. Create Policy / Certificate
+8. Extend Policy
+9. Generate Report
+10. Exit
+Enter choice: 1
+Enter First Name: Boris
+Enter Surname: Ghons
+Enter Address: Mulgrave Str
+Enter County: Limerick
+Enter Town/City/Village: Limerick
+Enter Date of Birth (dd/MM/yyyy): 09/05/1944
+Customer Age: 81
+Select Country Code:
+1. +353 (Ireland)
+2. +44 (UK)
+Choice: 1
+Enter Phone Number (7–10 digits): 841057732
+Enter Email: boris@gmail.com
+Enter Gender (M/F): M
+Customer saved to file successfully!
+
+Customer Created Successfully!
+
+Customer ID: CUST-0011
+Name: Boris Ghons
+Address: Mulgrave Str
+County: Limerick
+Town: Limerick
+Date of Birth: 1944-05-09
+Gender: Male
+Phone Number: +353841057732
+Email: boris@gmail.com
+Calculated Age: 81
+
+==== Munster Motor Insurance ====
+1. Add Customer
+2. Search/Edit Customer
+3. Add Vehicle
+4. Search/Edit Vehicle
+5. Generate Quotation
+6. Search Quotation
+7. Create Policy / Certificate
+8. Extend Policy
+9. Generate Report
+10. Exit
+Enter choice: 5
+Enter Customer ID: CUST-0011
+Enter Vehicle Registration: CAR-0002
+Insurance Category:
+1. Fully Comprehensive
+2. Third Party Fire and Theft
+1
+No quotation available for customers aged 80 or above.
+Quotation cannot be generated for this customer.
+
+==== Munster Motor Insurance ====
+1. Add Customer
+2. Search/Edit Customer
+3. Add Vehicle
+4. Search/Edit Vehicle
+5. Generate Quotation
+6. Search Quotation
+7. Create Policy / Certificate
+8. Extend Policy
+9. Generate Report
+10. Exit
+Enter choice: 1
+Enter First Name: Mike
+Enter Surname: Tyson
+Enter Address: Castle Str
+Enter County: Cork
+Enter Town/City/Village: Cork
+Enter Date of Birth (dd/MM/yyyy): 1950/01/06
+Invalid date. Please enter a real calendar date.
+Enter Date of Birth (dd/MM/yyyy): 01/06/1950
+Customer Age: 75
+Select Country Code:
+1. +353 (Ireland)
+2. +44 (UK)
+Choice: 1
+Enter Phone Number (7–10 digits): 851607195
+Enter Email: mike@yahoo.com
+Enter Gender (M/F): M
+Customer saved to file successfully!
+
+Customer Created Successfully!
+
+Customer ID: CUST-0012
+Name: Mike Tyson
+Address: Castle Str
+County: Cork
+Town: Cork
+Date of Birth: 1950-06-01
+Gender: Male
+Phone Number: +353851607195
+Email: mike@yahoo.com
+Calculated Age: 75
+
+==== Munster Motor Insurance ====
+1. Add Customer
+2. Search/Edit Customer
+3. Add Vehicle
+4. Search/Edit Vehicle
+5. Generate Quotation
+6. Search Quotation
+7. Create Policy / Certificate
+8. Extend Policy
+9. Generate Report
+10. Exit
+Enter choice: 5
+Enter Customer ID: CUST-0012
+Enter Vehicle Registration: CAR-0006
+Insurance Category:
+1. Fully Comprehensive
+2. Third Party Fire and Theft
+2
+
+QUOTATION GENERATED & SAVED
+
+========= MOTOR INSURANCE QUOTATION =========
+Quotation ID: QUOT-0013
+Customer ID: CUST-0012
+Customer Name: Mike Tyson
+Customer Age: 75
+Gender: Male
+Vehicle: CAR-0006 132MH1191 BMW X6 2015
+--------------------------------------------
+Base Premium: €2000.0
+Age Adjustment: €1300.0
+County Adjustment: €50.0
+Vehicle Adjustment: €0.0
+Emission Adjustment: €150.0
+Insurance Type Adjustment: €-120.0
+--------------------------------------------
+Final Premium: €1080.0
+============================================
+
+==== Munster Motor Insurance ====
+1. Add Customer
+2. Search/Edit Customer
+3. Add Vehicle
+4. Search/Edit Vehicle
+5. Generate Quotation
+6. Search Quotation
+7. Create Policy / Certificate
+8. Extend Policy
+9. Generate Report
+10. Exit
+Enter choice: 5
+Enter Customer ID: CUST-0008
+Enter Vehicle Registration: CAR-0005
+Insurance Category:
+1. Fully Comprehensive
+2. Third Party Fire and Theft
+2
+
+QUOTATION GENERATED & SAVED
+
+========= MOTOR INSURANCE QUOTATION =========
+Quotation ID: QUOT-0014
+Customer ID: CUST-0008
+Customer Name: Clara Burbot
+Customer Age: 24
+Gender: Female
+Vehicle: CAR-0005 93KE4881 Opel Vectra 1993
+--------------------------------------------
+Base Premium: €800.0
+Age Adjustment: €320.0
+County Adjustment: €50.0
+Vehicle Adjustment: €0.0
+Emission Adjustment: €300.0
+Insurance Type Adjustment: €-120.0
+--------------------------------------------
+Final Premium: €860.0
+============================================
+
+==== Munster Motor Insurance ====
+1. Add Customer
+2. Search/Edit Customer
+3. Add Vehicle
+4. Search/Edit Vehicle
+5. Generate Quotation
+6. Search Quotation
+7. Create Policy / Certificate
+8. Extend Policy
+9. Generate Report
+10. Exit
+Enter choice: 3
+Enter Vehicle Registration (e.g., 162MO1185): 25D2681
+Enter Make: BMW
+Enter Model: Convertible
+Enter Year: 2025
+Select Emission Level:
+1. High
+2. Medium
+3. Low
+Choice: 3
+
+Vehicle Created!
+CAR-0009 25D2681 BMW Convertible 2025
+
+==== Munster Motor Insurance ====
+1. Add Customer
+2. Search/Edit Customer
+3. Add Vehicle
+4. Search/Edit Vehicle
+5. Generate Quotation
+6. Search Quotation
+7. Create Policy / Certificate
+8. Extend Policy
+9. Generate Report
+10. Exit
+Enter choice: 5
+Enter Customer ID: CUST-0006
+Enter Vehicle Registration: 25D2681
+Insurance Category:
+1. Fully Comprehensive
+2. Third Party Fire and Theft
+1
+
+QUOTATION GENERATED & SAVED
+
+========= MOTOR INSURANCE QUOTATION =========
+Quotation ID: QUOT-0015
+Customer ID: CUST-0006
+Customer Name: Roberta Molly
+Customer Age: 28
+Gender: Female
+Vehicle: CAR-0009 25D2681 BMW Convertible 2025
+--------------------------------------------
+Base Premium: €800.0
+Age Adjustment: €320.0
+County Adjustment: €0.0
+Vehicle Adjustment: €0.0
+Emission Adjustment: €-55.0
+Insurance Type Adjustment: €200.0
+--------------------------------------------
+Final Premium: €825.0
+============================================
+
+==== Munster Motor Insurance ====
+1. Add Customer
+2. Search/Edit Customer
+3. Add Vehicle
+4. Search/Edit Vehicle
+5. Generate Quotation
+6. Search Quotation
+7. Create Policy / Certificate
+8. Extend Policy
+9. Generate Report
+10. Exit
+Enter choice: 5
+Enter Customer ID: CUST-0004
+Enter Vehicle Registration: 212D19534
+Insurance Category:
+1. Fully Comprehensive
+2. Third Party Fire and Theft
+2
+
+QUOTATION GENERATED & SAVED
+
+========= MOTOR INSURANCE QUOTATION =========
+Quotation ID: QUOT-0016
+Customer ID: CUST-0004
+Customer Name: Michael Ivanov
+Customer Age: 27
+Gender: Male
+Vehicle: CAR-0003 212D19534 Renault Megane 2013
+--------------------------------------------
+Base Premium: €2000.0
+Age Adjustment: €800.0
+County Adjustment: €0.0
+Vehicle Adjustment: €0.0
+Emission Adjustment: €150.0
+Insurance Type Adjustment: €-120.0
+--------------------------------------------
+Final Premium: €1305.0
+============================================
+
+==== Munster Motor Insurance ====
+1. Add Customer
+2. Search/Edit Customer
+3. Add Vehicle
+4. Search/Edit Vehicle
+5. Generate Quotation
+6. Search Quotation
+7. Create Policy / Certificate
+8. Extend Policy
+9. Generate Report
+10. Exit
+Enter choice: 5
+Enter Customer ID: CUST-0009
+Enter Vehicle Registration: 25D2681
+Insurance Category:
+1. Fully Comprehensive
+2. Third Party Fire and Theft
+2
+
+QUOTATION GENERATED & SAVED
+
+========= MOTOR INSURANCE QUOTATION =========
+Quotation ID: QUOT-0017
+Customer ID: CUST-0009
+Customer Name: Martin Cruger
+Customer Age: 22
+Gender: Male
+Vehicle: CAR-0009 25D2681 BMW Convertible 2025
+--------------------------------------------
+Base Premium: €2000.0
+Age Adjustment: €800.0
+County Adjustment: €225.0
+Vehicle Adjustment: €0.0
+Emission Adjustment: €-55.0
+Insurance Type Adjustment: €-120.0
+--------------------------------------------
+Final Premium: €1450.0
+============================================
+
+==== Munster Motor Insurance ====
+1. Add Customer
+2. Search/Edit Customer
+3. Add Vehicle
+4. Search/Edit Vehicle
+5. Generate Quotation
+6. Search Quotation
+7. Create Policy / Certificate
+8. Extend Policy
+9. Generate Report
+10. Exit
+Enter choice: 

@@ -3,8 +3,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-
-
+import java.time.LocalDate;
 
 public class Main {
 
@@ -28,14 +27,15 @@ public class Main {
         do {
             System.out.println("\n==== Munster Motor Insurance ====");
             System.out.println("1. Add Customer");
-            System.out.println("2. Search Customer");
+            System.out.println("2. Search/Edit Customer");
             System.out.println("3. Add Vehicle");
-            System.out.println("4. Search Vehicle");
+            System.out.println("4. Search/Edit Vehicle");
             System.out.println("5. Generate Quotation");
             System.out.println("6. Search Quotation");
             System.out.println("7. Create Policy / Certificate");
-            System.out.println("8. Generate Report");
-            System.out.println("9. Exit");
+            System.out.println("8. Extend Policy");
+            System.out.println("9. Generate Report");
+            System.out.println("10. Exit");
             System.out.print("Enter choice: ");
 
             choice = scanner.nextInt();
@@ -48,6 +48,7 @@ public class Main {
                     String surname = validateName(scanner, "Surname");
                     String address = validateAddress(scanner);
                     String county = validateCounty(scanner);
+                    String town = validateTown(scanner);
                     String dob = validateDOB(scanner);
                     String phone = validatePhone(scanner);
                     String email = validateEmail(scanner);
@@ -55,7 +56,7 @@ public class Main {
 
                     Customer customer = new Customer(
                             firstName, surname, address,
-                            county, dob, gender,
+                            county, town,  dob, gender,
                             phone, email);
                     customer.saveToFile();
                     customers.add(customer);
@@ -113,7 +114,26 @@ public class Main {
                     int year = scanner.nextInt();
                     scanner.nextLine();
 
-                    Vehicle vehicle = new Vehicle(reg, make, model, year);
+
+                    System.out.println("Select Emission Level:");
+                    System.out.println("1. High");
+                    System.out.println("2. Medium");
+                    System.out.println("3. Low");
+                    System.out.print("Choice: ");
+
+                    int emissionChoice = scanner.nextInt();
+                    scanner.nextLine();
+
+                    String emission = "";
+
+                    switch(emissionChoice){
+                        case 1: emission = "High"; break;
+                        case 2: emission = "Medium"; break;
+                        case 3: emission = "Low"; break;
+                    }
+
+
+                    Vehicle vehicle = new Vehicle(reg, make, model, year, emission);
                     vehicle.saveToFile();
 
                     System.out.println("\nVehicle Created!");
@@ -163,7 +183,14 @@ public class Main {
                         break;
                     }
 
-                    Quotation quotation = new Quotation(selectedCustomer, selectedVehicle);
+                    System.out.println("Insurance Category:");
+                    System.out.println("1. Fully Comprehensive");
+                    System.out.println("2. Third Party Fire and Theft");
+
+                    int insuranceType = scanner.nextInt();
+                    scanner.nextLine();
+
+                    Quotation quotation = new Quotation(selectedCustomer, selectedVehicle, insuranceType);
                     if (quotation.getFinalPremium() == -1) {
                         System.out.println("Quotation cannot be generated for this customer.");
                         break;
@@ -260,11 +287,16 @@ public class Main {
 
 
                 case 8:
-                    generateRenewalReport();
+                    extendPolicy();
                     break;
 
 
                 case 9:
+                    generateRenewalReport();
+                    break;
+
+
+                case 10:
                     System.out.println("Exiting system...");
                     break;
 
@@ -273,7 +305,7 @@ public class Main {
                     System.out.println("Invalid option.");
             }
 
-        } while (choice != 9);
+        } while (choice != 10);
 
         scanner.close();
     }
@@ -321,16 +353,19 @@ public class Main {
     }
 
     private static String validateCounty(Scanner scanner) {
-        String input;
-        while (true) {
-            System.out.print("Enter County (Example: Roscrea co Tipperary): ");
-            input = scanner.nextLine();
 
-            if (input.matches("[A-Z][a-zA-Z]+\\sco\\s[A-Z][a-zA-Z]+")) {
-                return input;
-            } else {
-                System.out.println("Invalid County format.");
+        String input;
+
+        while (true) {
+            System.out.print("Enter County: ");
+            input = scanner.nextLine().trim();
+
+            if (!input.matches("[A-Z][a-zA-Z]{2,30}")) {
+                System.out.println("Invalid County format. Example: Tipperary");
+                continue;
             }
+
+            return input;
         }
     }
 
@@ -446,10 +481,11 @@ public class Main {
                     String surname = data[2];
                     String address = data[3];
                     String county = data[4];
-                    String dob = data[5];
-                    String phone = data[6];
-                    String email = data[7];
-                    boolean gender = data[8].equalsIgnoreCase("M");
+                    String town = data[5];
+                    String dob = data[6];
+                    String phone = data[7];
+                    String email = data[8];
+                    boolean gender = data[9].equalsIgnoreCase("M");
 
                     return new Customer(
                             data[0],          // customerID from file
@@ -457,6 +493,7 @@ public class Main {
                             surname,
                             address,
                             county,
+                            town,
                             dob,
                             gender,
                             phone,
@@ -473,8 +510,7 @@ public class Main {
     }
 
 
-
-    public static Vehicle findVehicleByReg(String regNumber) {
+    public static Vehicle findVehicleByReg(String input) {
 
         try (Scanner fileScanner = new Scanner(new java.io.File("vehicle.txt"))) {
 
@@ -488,9 +524,10 @@ public class Main {
                 String make = data[2].trim();
                 String model = data[3].trim();
                 int year = Integer.parseInt(data[4].trim());
+                String emission = data[5].trim();
 
-                if (reg.equalsIgnoreCase(regNumber)) {
-                    return new Vehicle(vehicleID, reg, make, model, year);
+                if (reg.equalsIgnoreCase(input) || vehicleID.equalsIgnoreCase(input)) {
+                    return new Vehicle(vehicleID, reg, make, model, year, emission);
                 }
             }
 
@@ -885,6 +922,23 @@ public class Main {
         System.out.println("Vehicle updated successfully.");
     }
 
+    private static String validateTown(Scanner scanner) {
+
+        String input;
+
+        while (true) {
+            System.out.print("Enter Town/City/Village: ");
+            input = scanner.nextLine().trim();
+
+            if (!input.matches("[A-Z][a-zA-Z]{2,30}")) {
+                System.out.println("Town must start with a capital letter and contain only letters.");
+                continue;
+            }
+
+            return input;
+        }
+    }
+
 
     public static void updateVehicleFile(String[] updatedData) {
 
@@ -953,6 +1007,83 @@ public class Main {
     }
 
 
+    public static void extendPolicy() {
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter Policy ID: ");
+        String policyID = scanner.nextLine();
+
+        try {
+
+            java.io.File inputFile = new java.io.File("policies.txt");
+            java.io.File tempFile = new java.io.File("policies_temp.txt");
+
+            Scanner fileScanner = new Scanner(inputFile);
+            java.io.PrintWriter writer = new java.io.PrintWriter(tempFile);
+
+            boolean found = false;
+
+            while (fileScanner.hasNextLine()) {
+
+                String line = fileScanner.nextLine();
+                String[] data = line.split(",");
+
+                if (data[0].equalsIgnoreCase(policyID)) {
+
+                    found = true;
+
+                    System.out.println("\nPolicy Found:");
+                    System.out.println(line);
+
+                    System.out.print("Would you like to extend this policy? (Y/N): ");
+                    String decision = scanner.nextLine().toUpperCase();
+
+                    if (decision.equals("Y")) {
+
+                        LocalDate startDate = LocalDate.parse(data[7]);
+                        LocalDate newStart = startDate.plusYears(1);
+                        LocalDate newEnd = newStart.plusYears(1);
+
+                        data[7] = newStart.toString();
+                        data[8] = newEnd.toString();
+
+                        String updatedLine = String.join(",", data);
+
+                        writer.println(updatedLine);
+
+                        System.out.println("Policy extended successfully.");
+                        System.out.println(updatedLine);
+
+                    } else {
+
+                        writer.println(line);
+                        System.out.println("Policy not extended.");
+                    }
+
+                } else {
+
+                    writer.println(line);
+                }
+            }
+
+            fileScanner.close();
+            writer.close();
+
+            inputFile.delete();
+            tempFile.renameTo(inputFile);
+
+            if (!found) {
+                System.out.println("Policy not found.");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error extending policy.");
+            e.printStackTrace();
+        }
+    }
+
+
     public static void createPolicyFromQuotation(String quotationID) {
 
         try (Scanner fileScanner = new Scanner(new java.io.File("quotations.txt"))) {
@@ -967,13 +1098,10 @@ public class Main {
                     // New structured format indexes
                     String customerID = data[1];
                     String reg = data[2];
-                    String make = data[3];
-                    String model = data[4];
-                    int year = Integer.parseInt(data[5]);
                     double premium = Double.parseDouble(data[6]);
 
                     Customer quotationCustomer = findCustomerByID(customerID);
-                    Vehicle quotationVehicle = new Vehicle(reg, make, model, year);
+                    Vehicle quotationVehicle = findVehicleByReg(reg);
 
                     Policy policy = new Policy(quotationCustomer, quotationVehicle, premium);
                     policy.saveToFile();

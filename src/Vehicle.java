@@ -13,39 +13,39 @@ public class Vehicle {
     private String make;
     private String model;
     private int year;
+    private String emission;
 
-    public Vehicle(String reg, String make, String model, int year){
+
+
+    // Getters:
+
+    public Vehicle(String reg, String make, String model, int year,  String emission) {
         this.vehicleID = String.format("CAR-%04d", nextVehicleID++);
         this.reg = reg;
         this.make = make;
         this.model = model;
         this.year = year;
+        this.emission = emission;
     }
 
     // Constructor for loading from file
-    public Vehicle(String vehicleID, String reg, String make, String model, int year){
+    public Vehicle(String vehicleID, String reg, String make, String model, int year,   String emission) {
         this.vehicleID = vehicleID;
         this.reg = reg;
         this.make = make;
         this.model = model;
         this.year = year;
+        this.emission = emission;
     }
 
     public static void initializeVehicleID() {
-
         int maxID = 0;
-
         try (BufferedReader reader = new BufferedReader(new FileReader("vehicle.txt"))) {
-
             String line;
-
             while ((line = reader.readLine()) != null) {
-
                 String[] parts = line.split(",");
                 String idPart = parts[0]; // CAR-0003
-
                 int number = Integer.parseInt(idPart.substring(4));
-
                 if (number > maxID) {
                     maxID = number;
                 }
@@ -58,13 +58,18 @@ public class Vehicle {
         nextVehicleID = maxID + 1;
     }
 
+    public String getEmission() {
+        return emission;
+    }
+
     public void saveToFile() {
 
         String data = vehicleID + "," +
                 reg + "," +
                 make + "," +
                 model + "," +
-                year;
+                year + "," +
+                emission;
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("vehicle.txt", true))) {
             writer.write(data);
@@ -83,4 +88,7 @@ public class Vehicle {
     public String getDetails(){
         return vehicleID + " " + reg + " " + make + " " + model + " " + year;
     }
+
+
+
 }

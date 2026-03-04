@@ -15,15 +15,23 @@ public class Quotation {
     private int age;
     private double adjustmentAmount;
     private String adjustmentDescription;
+    private int insuranceType;
 
-    public Quotation(Customer customer, Vehicle vehicle) {
+    private double countyAdjustment = 0;
+    private double vehicleAdjustment = 0;
+    private double emissionAdjustment = 0;
+    private double insuranceAdjustment = 0;
+
+    public Quotation(Customer customer, Vehicle vehicle, int insuranceType) {
 
         this.quotationID = String.format("QUOT-%04d", nextQuotationID++);
         this.customer = customer;
         this.vehicle = vehicle;
+        this.insuranceType = insuranceType;
 
         calculatePremium();
     }
+
 
     private void calculatePremium() {
 
@@ -39,32 +47,103 @@ public class Quotation {
 
         // Gender base
         if (customer.isMale()) {
-            basePremium = generalBase * 2;   // 2000
+            basePremium = generalBase * 2;
         } else {
-            basePremium = generalBase * 0.8; // 800
+            basePremium = generalBase * 0.8;
         }
 
         double adjustedPremium = basePremium;
 
-        // Age adjustments
+        // AGE RULE
         if (age < 20) {
             adjustmentAmount = basePremium * 0.20;
             adjustedPremium += adjustmentAmount;
             adjustmentDescription = "+20% (Under 20 loading)";
         }
         else if (age <= 35) {
-            adjustmentAmount = basePremium * 0.40;
-            adjustedPremium -= adjustmentAmount;
+            adjustmentAmount = -(basePremium * 0.40);
+            adjustedPremium += adjustmentAmount;
             adjustmentDescription = "-40% (Age 20–35 discount)";
         }
-        else if (age < 80) {
-            adjustmentAmount = basePremium * 0.65;
-            adjustedPremium -= adjustmentAmount;
+        else {
+            adjustmentAmount = -(basePremium * 0.65);
+            adjustedPremium += adjustmentAmount;
             adjustmentDescription = "-65% (Age 36–79 discount)";
         }
 
+        // COUNTY RULE
+        String county = customer.getCounty().toLowerCase();
+
+        switch (county) {
+            case "cork": countyAdjustment = 50; break;
+            case "clare": countyAdjustment = 225; break;
+            case "kerry": countyAdjustment = 50; break;
+            case "limerick": countyAdjustment = -75; break;
+            case "tipperary": countyAdjustment = -80; break;
+            case "waterford": countyAdjustment = -100; break;
+        }
+
+        adjustedPremium += countyAdjustment;
+
+        // VEHICLE MAKE/MODEL
+        String make = vehicle.getMake();
+        String model = vehicle.getModel();
+
+        if(make.equalsIgnoreCase("BMW")){
+
+            if(model.equalsIgnoreCase("Convertible")) vehicleAdjustment = 200;
+            if(model.equalsIgnoreCase("Gran Turismo")) vehicleAdjustment = 250;
+            if(model.equalsIgnoreCase("X6")) vehicleAdjustment = 300;
+            if(model.equalsIgnoreCase("Z4")) vehicleAdjustment = 175;
+        }
+
+        else if(make.equalsIgnoreCase("Opel")){
+
+            if(model.equalsIgnoreCase("Corsa")) vehicleAdjustment = 50;
+            if(model.equalsIgnoreCase("Astra")) vehicleAdjustment = 105;
+            if(model.equalsIgnoreCase("Vectra")) vehicleAdjustment = 150;
+        }
+
+        else if(make.equalsIgnoreCase("Toyota")){
+
+            if(model.equalsIgnoreCase("Yaris")) vehicleAdjustment = 50;
+            if(model.equalsIgnoreCase("Auris")) vehicleAdjustment = 75;
+            if(model.equalsIgnoreCase("Corolla")) vehicleAdjustment = 100;
+            if(model.equalsIgnoreCase("Avensis")) vehicleAdjustment = 125;
+        }
+
+        else if(make.equalsIgnoreCase("Renault")){
+
+            if(model.equalsIgnoreCase("Fluence")) vehicleAdjustment = 100;
+            if(model.equalsIgnoreCase("Megane")) vehicleAdjustment = 75;
+            if(model.equalsIgnoreCase("Clio")) vehicleAdjustment = 50;
+        }
+
+        adjustedPremium += vehicleAdjustment;
+
+        // EMISSION RULE
+        String emission = vehicle.getEmission();
+
+        if(emission.equalsIgnoreCase("High")) emissionAdjustment = 300;
+        if(emission.equalsIgnoreCase("Medium")) emissionAdjustment = 150;
+        if(emission.equalsIgnoreCase("Low")) emissionAdjustment = -55;
+
+        adjustedPremium += emissionAdjustment;
+
+        // INSURANCE TYPE
+        if(insuranceType == 1) {
+            insuranceAdjustment = 200;
+        }
+        else {
+            insuranceAdjustment = -120;
+        }
+
+        adjustedPremium += insuranceAdjustment;
+
         finalPremium = adjustedPremium;
     }
+
+
 
     public String getQuotationID() {
         return quotationID;
@@ -85,12 +164,19 @@ public class Quotation {
                 "\nVehicle: " + vehicle.getDetails() +
                 "\n--------------------------------------------" +
                 "\nBase Premium: €" + basePremium +
-                "\nAdjustment: " + adjustmentDescription +
-                "\nAdjustment Amount: €" + adjustmentAmount +
+                "\nAge Adjustment: €" + (adjustmentDescription.contains("-") ? -adjustmentAmount : adjustmentAmount) +
+                "\nCounty Adjustment: €" + countyAdjustment +
+                "\nVehicle Adjustment: €" + vehicleAdjustment +
+                "\nEmission Adjustment: €" + emissionAdjustment +
+                "\nInsurance Type Adjustment: €" + insuranceAdjustment +
                 "\n--------------------------------------------" +
                 "\nFinal Premium: €" + finalPremium +
                 "\n============================================";
     }
+
+    double totalAdjustments = adjustmentAmount + countyAdjustment +
+            vehicleAdjustment + emissionAdjustment +
+            insuranceAdjustment;
 
     public void saveToFile() {
 

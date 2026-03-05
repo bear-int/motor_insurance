@@ -7,9 +7,6 @@ import java.time.LocalDate;
 
 public class Main {
 
-
-
-
     private static ArrayList<Customer> customers = new ArrayList<>();
 
     public static void main(String[] args) {
@@ -21,7 +18,6 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         int choice;
-
 
         // menu
         do {
@@ -80,18 +76,18 @@ public class Main {
 
                     String searchValue;
                     if (searchOption == 1) {
-                        // Ask user to enter 2 digits Customer ID
-                        System.out.print("Enter 2-digit Customer ID (e.g., 01, 14, 73): ");
-                        String idInput = scanner.nextLine().trim();
 
-                        // Validate input
-                        while (!idInput.matches("\\d{2}")) {
-                            System.out.print("Invalid input. Enter exactly 2 digits (e.g., 01, 14, 73): ");
-                            idInput = scanner.nextLine().trim();
+                        System.out.print("Enter Customer ID: (example CUST-0001)");
+                        searchValue = scanner.nextLine().trim().toUpperCase();
+
+                        while (!searchValue.matches("CUST-\\d{4}")) {
+                            System.out.println("Error, Enter valid customer ID (example CUST-0001)");
+                            System.out.print("Enter Customer ID: ");
+                            searchValue = scanner.nextLine().trim().toUpperCase();
                         }
-                        // Construct full ID in CUST-00XX format
-                        searchValue = "CUST-00" + idInput;
+
                     } else {
+
                         System.out.print("Enter search value: ");
                         searchValue = scanner.nextLine().trim();
                     }
@@ -163,7 +159,7 @@ public class Main {
 
                 case 5:
 
-                    System.out.print("Enter Customer ID: ");
+                    System.out.print("Enter Customer ID: (example CUST-0001)");
                     String custID = scanner.nextLine();
 
                     Customer selectedCustomer = findCustomerByID(custID);
@@ -480,8 +476,8 @@ public class Main {
                     String firstName = data[1];
                     String surname = data[2];
                     String address = data[3];
-                    String county = data[4];
-                    String town = data[5];
+                    String town = data[4];
+                    String county = data[5];
                     String dob = data[6];
                     String phone = data[7];
                     String email = data[8];

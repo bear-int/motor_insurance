@@ -3,7 +3,7 @@ CUST-0002,Niamh,Murphy,23 Mulgrave Street,Castleconnell,Limerick,2002-10-19,+353
 CUST-0003,Alexa,Jemeson,73 Main Rd,Waterford,Waterford,1983-03-06,+353834021894,alexa.j@mail.ru,F
 CUST-0004,Michael,Ivanov,45 Castle street,Clare,Clare,1998-10-01,+353851604272,ivanov@mail.ru,M
 CUST-0005,Abiola,Ogunwemimo,45 limerick street,Limerick,Limerick,1992-01-01,+3530988525219,amn@gmail.com,M
-CUST-0006,Roberta,Molly,Martin Murphy St,Nenagh,Tipperary,1997-06-03,+3538051603291,robert.deniro@gmail.com,F
+CUST-0006,Roberta,Molly,Martin Murphy St,Nenagh,Tipperary,1997-06-03,+3538051603291,roberta.molly@gmail.com,F
 CUST-0007,Michael,Nalimov,Convent Road,Roscrea,Tipperary,1988-02-03,+353851601481,nalimov.m@gmail.com,M
 CUST-0008,Clara,Burbot,Cashel Str,Cork,Cork,2001-10-07,+353851603681,burbot@gmail.com,F
 CUST-0009,Martin,Cruger,12 Camden Row,Clare,Clare,2004-02-09,+353851049371,borman.martin@gmail.com,M

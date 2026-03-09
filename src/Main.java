@@ -2,12 +2,8 @@ import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.time.LocalDate;
 
 public class Main {
-
-    private static ArrayList<Customer> customers = new ArrayList<>();
 
     public static void main(String[] args) {
 
@@ -55,7 +51,6 @@ public class Main {
                             county, town,  dob, gender,
                             phone, email);
                     customer.saveToFile();
-                    customers.add(customer);
 
                     System.out.println("\nCustomer Created Successfully!");
                     System.out.println(customer.getCustomerDetails());
@@ -120,13 +115,12 @@ public class Main {
                     int emissionChoice = scanner.nextInt();
                     scanner.nextLine();
 
-                    String emission = "";
-
-                    switch(emissionChoice){
-                        case 1: emission = "High"; break;
-                        case 2: emission = "Medium"; break;
-                        case 3: emission = "Low"; break;
-                    }
+                    String emission = switch (emissionChoice) {
+                        case 1 -> "High";
+                        case 2 -> "Medium";
+                        case 3 -> "Low";
+                        default -> "";
+                    };
 
 
                     Vehicle vehicle = new Vehicle(reg, make, model, year, emission);
@@ -549,8 +543,8 @@ public class Main {
                 String id = data[0];
                 String firstName = data[1];
                 String surname = data[2];
-                String email = data[7];
-                String phone = data[6];
+                String phone = data[7];
+                String email = data[8];
 
                 boolean match = false;
 
@@ -670,8 +664,13 @@ public class Main {
             fileScanner.close();
             writer.close();
 
-            inputFile.delete();
-            tempFile.renameTo(inputFile);
+            if (!inputFile.delete()) {
+                System.out.println("Could not delete original file.");
+            }
+
+            if (!tempFile.renameTo(inputFile)) {
+                System.out.println("Could not rename temp file.");
+            }
 
         } catch (Exception e) {
             System.out.println("Error updating customer file.");
@@ -730,8 +729,8 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
 
-        LocalDate startDate = null;
-        LocalDate endDate = null;
+        LocalDate startDate;
+        LocalDate endDate;
 
         // Validate start date
         while (true) {
@@ -808,7 +807,7 @@ public class Main {
 
         } catch (Exception e) {
             System.out.println("Error generating report.");
-            e.printStackTrace();
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
@@ -961,18 +960,11 @@ public class Main {
             fileScanner.close();
             writer.close();
 
-            inputFile.delete();
-            tempFile.renameTo(inputFile);
 
         } catch (Exception e) {
             System.out.println("Error updating vehicle file.");
         }
     }
-
-
-
-
-
 
     public static void searchQuotation(String quotationID) {
 
@@ -1025,6 +1017,11 @@ public class Main {
                 String line = fileScanner.nextLine();
                 String[] data = line.split(",");
 
+                if (data.length < 6) {
+                    writer.println(line);
+                    continue;
+                }
+
                 if (data[0].equalsIgnoreCase(policyID)) {
 
                     found = true;
@@ -1038,9 +1035,41 @@ public class Main {
                     if (decision.equals("Y")) {
 
                         LocalDate startDate = LocalDate.parse(data[7]);
-                        LocalDate newStart = startDate.plusYears(1);
-                        LocalDate newEnd = newStart.plusYears(1);
+                        LocalDate endDate = LocalDate.parse(data[8]);
 
+                        double currentPremium = Double.parseDouble(data[6]);
+
+                        long currentMonths = java.time.temporal.ChronoUnit.MONTHS.between(startDate, endDate);
+
+// reconstruct yearly premium
+                        double yearlyPremium = (currentPremium / currentMonths) * 12;
+
+// round yearly premium
+                        yearlyPremium = Math.round(yearlyPremium * 100.0) / 100.0;
+
+                        double monthlyPremium = yearlyPremium / 12;
+
+                        System.out.print("Enter extension period (1–12 months): ");
+                        int months = scanner.nextInt();
+                        scanner.nextLine();
+
+                        while (months < 1 || months > 12) {
+                            System.out.print("Invalid. Enter between 1 and 12 months: ");
+                            months = scanner.nextInt();
+                            scanner.nextLine();
+                        }
+
+                        double extensionCost = monthlyPremium * months;
+
+// round final price
+                        extensionCost = Math.round(extensionCost * 100.0) / 100.0;
+
+                        String formattedCost = String.format("%.2f", extensionCost);
+
+                        LocalDate newStart = endDate;
+                        LocalDate newEnd = endDate.plusMonths(months);
+
+                        data[6] = formattedCost;
                         data[7] = newStart.toString();
                         data[8] = newEnd.toString();
 
@@ -1049,10 +1078,9 @@ public class Main {
                         writer.println(updatedLine);
 
                         System.out.println("Policy extended successfully.");
-                        System.out.println(updatedLine);
+                        System.out.println("Extension Cost: €" + formattedCost);
 
                     } else {
-
                         writer.println(line);
                         System.out.println("Policy not extended.");
                     }
@@ -1091,7 +1119,6 @@ public class Main {
 
                 if (data[0].equalsIgnoreCase(quotationID)) {
 
-                    // New structured format indexes
                     String customerID = data[1];
                     String reg = data[2];
                     double premium = Double.parseDouble(data[6]);
@@ -1112,8 +1139,10 @@ public class Main {
             System.out.println("Quotation not found.");
 
         } catch (Exception e) {
-            e.printStackTrace(); // TEMPORARY: show real error
+            System.out.println("Error creating policy.");
+            e.printStackTrace();
         }
+
     }
 
 

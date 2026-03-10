@@ -465,20 +465,29 @@ public class Main {
                 String line = fileScanner.nextLine();
                 String[] data = line.split(",");
 
+                // Safety check to avoid crashes
+                if (data.length < 10) {
+                    continue;
+                }
+
                 if (data[0].equalsIgnoreCase(id)) {
 
                     String firstName = data[1];
                     String surname = data[2];
                     String address = data[3];
-                    String town = data[4];
-                    String county = data[5];
+
+                    // File format is Address,County,Town
+                    String county = data[4];
+                    String town = data[5];
+
                     String dob = data[6];
                     String phone = data[7];
                     String email = data[8];
+
                     boolean gender = data[9].equalsIgnoreCase("M");
 
                     return new Customer(
-                            data[0],          // customerID from file
+                            data[0],      // Customer ID
                             firstName,
                             surname,
                             address,
@@ -493,12 +502,11 @@ public class Main {
             }
 
         } catch (Exception e) {
-            System.out.println("Error reading file: " + e.getMessage());
+            System.out.println("Error reading customers file: " + e.getMessage());
         }
 
         return null;
     }
-
 
     public static Vehicle findVehicleByReg(String input) {
 
@@ -539,6 +547,12 @@ public class Main {
 
                 String line = fileScanner.nextLine();
                 String[] data = line.split(",");
+
+                if (data.length < 10) {
+                    continue;
+                }
+
+
 
                 String id = data[0];
                 String firstName = data[1];
@@ -624,15 +638,15 @@ public class Main {
         String county = scanner.nextLine();
         if (!county.isEmpty()) data[4] = county;
 
-        System.out.println("5. Phone: " + data[6]);
+        System.out.println("5. Phone: " + data[7]);
         System.out.print("Enter new Phone (or press Enter to keep current): ");
         String phone = scanner.nextLine();
-        if (!phone.isEmpty()) data[6] = phone;
+        if (!phone.isEmpty()) data[7] = phone;
 
-        System.out.println("6. Email: " + data[7]);
+        System.out.println("6. Email: " + data[8]);
         System.out.print("Enter new Email (or press Enter to keep current): ");
         String email = scanner.nextLine();
-        if (!email.isEmpty()) data[7] = email;
+        if (!email.isEmpty()) data[8] = email;
 
         updateCustomerFile(data);
 

@@ -3,7 +3,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -60,6 +59,7 @@ public class Customer {
         this.surname = surname;
         this.address = address;
         this.county = county;
+        this.town = town;     // ← missing line (important)
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
         this.phone = phoneNumber;

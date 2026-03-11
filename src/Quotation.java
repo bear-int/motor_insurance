@@ -1,39 +1,50 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDate;
+import java.io.BufferedReader;
+import java.io.FileReader;
+
 
 public class Quotation {
+
+    private double yearlyPremium;
+    private double monthlyPremium;
 
     private static int nextQuotationID = 1;
 
     private String quotationID;
     private Customer customer;
     private Vehicle vehicle;
+
+    private int insuranceType;
+    private int months;
+
     private double basePremium;
     private double finalPremium;
+
     private int age;
-    private double adjustmentAmount;
-    private String adjustmentDescription;
-    private int insuranceType;
 
-    private double countyAdjustment = 0;
-    private double vehicleAdjustment = 0;
-    private double emissionAdjustment = 0;
-    private double insuranceAdjustment = 0;
+    private double ageAdjustment;
+    private double countyAdjustment;
+    private double vehicleAdjustment;
+    private double emissionAdjustment;
+    private double insuranceAdjustment;
 
-    public Quotation(Customer customer, Vehicle vehicle, int insuranceType) {
+
+    public Quotation(Customer customer, Vehicle vehicle, int insuranceType, int months) {
 
         this.quotationID = String.format("QUOT-%04d", nextQuotationID++);
         this.customer = customer;
         this.vehicle = vehicle;
         this.insuranceType = insuranceType;
+        this.months = months;
 
         calculatePremium();
     }
 
-
     private void calculatePremium() {
+
+        resetAdjustments();
 
         age = customer.getAge();
 
@@ -43,110 +54,159 @@ public class Quotation {
             return;
         }
 
+        calculateBasePremium();
+        calculateAgeAdjustment();
+        calculateCountyAdjustment();
+        calculateVehicleAdjustment();
+        calculateEmissionAdjustment();
+        calculateInsuranceAdjustment();
+
+        yearlyPremium =
+                basePremium +
+                        ageAdjustment +
+                        countyAdjustment +
+                        vehicleAdjustment +
+                        emissionAdjustment +
+                        insuranceAdjustment;
+
+        monthlyPremium = yearlyPremium / 12;
+
+        finalPremium = monthlyPremium * months;
+
+// rounding
+        yearlyPremium = Math.round(yearlyPremium * 100.0) / 100.0;
+        monthlyPremium = Math.round(monthlyPremium * 100.0) / 100.0;
+        finalPremium = Math.round(finalPremium * 100.0) / 100.0;
+    }
+
+    private void resetAdjustments() {
+        ageAdjustment = 0;
+        countyAdjustment = 0;
+        vehicleAdjustment = 0;
+        emissionAdjustment = 0;
+        insuranceAdjustment = 0;
+    }
+
+    private void calculateBasePremium() {
+
         double generalBase = 1000;
 
-        // Gender base
         if (customer.isMale()) {
             basePremium = generalBase * 2;
         } else {
             basePremium = generalBase * 0.8;
         }
+    }
 
-        double adjustedPremium = basePremium;
+    private void calculateAgeAdjustment() {
 
-        // AGE RULE
         if (age < 20) {
-            adjustmentAmount = basePremium * 0.20;
-            adjustedPremium += adjustmentAmount;
-            adjustmentDescription = "+20% (Under 20 loading)";
+            ageAdjustment = basePremium * 0.20;
         }
         else if (age <= 35) {
-            adjustmentAmount = -(basePremium * 0.40);
-            adjustedPremium += adjustmentAmount;
-            adjustmentDescription = "-40% (Age 20–35 discount)";
+            ageAdjustment = -(basePremium * 0.40);
         }
         else {
-            adjustmentAmount = -(basePremium * 0.65);
-            adjustedPremium += adjustmentAmount;
-            adjustmentDescription = "-65% (Age 36–79 discount)";
+            ageAdjustment = -(basePremium * 0.65);
         }
+    }
 
-        // COUNTY RULE
-        String county = customer.getCounty().toLowerCase();
+    private void calculateCountyAdjustment() {
 
-        switch (county) {
-            case "cork": countyAdjustment = 50; break;
-            case "clare": countyAdjustment = 225; break;
-            case "kerry": countyAdjustment = 50; break;
-            case "limerick": countyAdjustment = -75; break;
-            case "tipperary": countyAdjustment = -80; break;
-            case "waterford": countyAdjustment = -100; break;
+        String county = customer.getCounty();
+
+        if (county == null) return;
+
+        switch (county.toLowerCase()) {
+
+            case "cork":
+            case "kerry":
+                countyAdjustment = 50;
+                break;
+
+            case "clare":
+                countyAdjustment = 225;
+                break;
+
+            case "limerick":
+                countyAdjustment = -75;
+                break;
+
+            case "tipperary":
+                countyAdjustment = -80;
+                break;
+
+            case "waterford":
+                countyAdjustment = -100;
+                break;
         }
+    }
 
-        adjustedPremium += countyAdjustment;
+    private void calculateVehicleAdjustment() {
 
-        // VEHICLE MAKE/MODEL
         String make = vehicle.getMake();
         String model = vehicle.getModel();
 
-        if(make.equalsIgnoreCase("BMW")){
+        if (make == null || model == null) return;
 
-            if(model.equalsIgnoreCase("Convertible")) vehicleAdjustment = 200;
-            if(model.equalsIgnoreCase("Gran Turismo")) vehicleAdjustment = 250;
-            if(model.equalsIgnoreCase("X6")) vehicleAdjustment = 300;
-            if(model.equalsIgnoreCase("Z4")) vehicleAdjustment = 175;
+        switch (make.toLowerCase()) {
+
+            case "bmw":
+                switch (model.toLowerCase()) {
+                    case "convertible": vehicleAdjustment = 200; break;
+                    case "gran turismo": vehicleAdjustment = 250; break;
+                    case "x6": vehicleAdjustment = 300; break;
+                    case "z4": vehicleAdjustment = 175; break;
+                }
+                break;
+
+            case "opel":
+                switch (model.toLowerCase()) {
+                    case "corsa": vehicleAdjustment = 50; break;
+                    case "astra": vehicleAdjustment = 105; break;
+                    case "vectra": vehicleAdjustment = 150; break;
+                }
+                break;
+
+            case "toyota":
+                switch (model.toLowerCase()) {
+                    case "yaris": vehicleAdjustment = 50; break;
+                    case "auris": vehicleAdjustment = 75; break;
+                    case "corolla": vehicleAdjustment = 100; break;
+                    case "avensis": vehicleAdjustment = 125; break;
+                }
+                break;
+
+            case "renault":
+                switch (model.toLowerCase()) {
+                    case "fluence": vehicleAdjustment = 100; break;
+                    case "megane": vehicleAdjustment = 75; break;
+                    case "clio": vehicleAdjustment = 50; break;
+                }
+                break;
         }
-
-        else if(make.equalsIgnoreCase("Opel")){
-
-            if(model.equalsIgnoreCase("Corsa")) vehicleAdjustment = 50;
-            if(model.equalsIgnoreCase("Astra")) vehicleAdjustment = 105;
-            if(model.equalsIgnoreCase("Vectra")) vehicleAdjustment = 150;
-        }
-
-        else if(make.equalsIgnoreCase("Toyota")){
-
-            if(model.equalsIgnoreCase("Yaris")) vehicleAdjustment = 50;
-            if(model.equalsIgnoreCase("Auris")) vehicleAdjustment = 75;
-            if(model.equalsIgnoreCase("Corolla")) vehicleAdjustment = 100;
-            if(model.equalsIgnoreCase("Avensis")) vehicleAdjustment = 125;
-        }
-
-        else if(make.equalsIgnoreCase("Renault")){
-
-            if(model.equalsIgnoreCase("Fluence")) vehicleAdjustment = 100;
-            if(model.equalsIgnoreCase("Megane")) vehicleAdjustment = 75;
-            if(model.equalsIgnoreCase("Clio")) vehicleAdjustment = 50;
-        }
-
-        adjustedPremium += vehicleAdjustment;
-
-        // EMISSION RULE
-        String emission = vehicle.getEmission();
-
-        if(emission.equalsIgnoreCase("High")) emissionAdjustment = 300;
-        if(emission.equalsIgnoreCase("Medium")) emissionAdjustment = 150;
-        if(emission.equalsIgnoreCase("Low")) emissionAdjustment = -55;
-
-        adjustedPremium += emissionAdjustment;
-
-        // INSURANCE TYPE
-        if(insuranceType == 1) {
-            insuranceAdjustment = 200;
-        }
-        else {
-            insuranceAdjustment = -120;
-        }
-
-        adjustedPremium += insuranceAdjustment;
-
-        finalPremium = adjustedPremium;
     }
 
+    private void calculateEmissionAdjustment() {
 
+        String emission = vehicle.getEmission();
 
-    public String getQuotationID() {
-        return quotationID;
+        if (emission == null) return;
+
+        switch (emission.toLowerCase()) {
+            case "high": emissionAdjustment = 300; break;
+            case "medium": emissionAdjustment = 150; break;
+            case "low": emissionAdjustment = -55; break;
+        }
+    }
+
+    private void calculateInsuranceAdjustment() {
+
+        if (insuranceType == 1) {
+            insuranceAdjustment = 200;
+        } else {
+            insuranceAdjustment = -120;
+        }
     }
 
     public double getFinalPremium() {
@@ -162,69 +222,74 @@ public class Quotation {
                 "\nCustomer Age: " + age +
                 "\nGender: " + customer.getGender() +
                 "\nVehicle: " + vehicle.getDetails() +
+                "\nPolicy Period: " + months + " month(s)" +
                 "\n--------------------------------------------" +
                 "\nBase Premium: €" + basePremium +
-                "\nAge Adjustment: €" + (adjustmentDescription.contains("-") ? -adjustmentAmount : adjustmentAmount) +
+                "\nAge Adjustment: €" + ageAdjustment +
                 "\nCounty Adjustment: €" + countyAdjustment +
                 "\nVehicle Adjustment: €" + vehicleAdjustment +
                 "\nEmission Adjustment: €" + emissionAdjustment +
                 "\nInsurance Type Adjustment: €" + insuranceAdjustment +
                 "\n--------------------------------------------" +
-                "\nFinal Premium: €" + finalPremium +
+                "\nYearly Premium: €" + yearlyPremium +
+                "\nMonthly Premium: €" + monthlyPremium +
+                "\nPolicy Period: " + months + " month(s)" +
+                "\nPremium for " + months + " months: €" + finalPremium +
                 "\n============================================";
-    }
-
-    double totalAdjustments = adjustmentAmount + countyAdjustment +
-            vehicleAdjustment + emissionAdjustment +
-            insuranceAdjustment;
-
-    public void saveToFile() {
-
-        String data = quotationID + "," +
-                customer.getCustomerID() + "," +
-                vehicle.getReg() + "," +
-                vehicle.getMake() + "," +
-                vehicle.getModel() + "," +
-                vehicle.getYear() + "," +
-                finalPremium + "," +
-                java.time.LocalDate.now();
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("quotations.txt", true))) {
-            writer.write(data);
-            writer.newLine();
-        } catch (IOException e) {
-            System.out.println("Error saving quotation.");
-        }
     }
 
     public static void initializeQuotationID() {
 
         int maxID = 0;
 
-        try (java.io.BufferedReader reader =
-                     new java.io.BufferedReader(
-                             new java.io.FileReader("quotations.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("quotations.txt"))) {
 
             String line;
 
             while ((line = reader.readLine()) != null) {
 
-                String[] parts = line.split(",");
+                if (line.trim().isEmpty()) continue;
 
-                String idPart = parts[0]; // QUOT-0003
+                String[] data = line.split(",");
 
-                int number = Integer.parseInt(idPart.substring(5));
+                if (!data[0].startsWith("QUOT-")) continue;
+
+                int number = Integer.parseInt(data[0].substring(5));
 
                 if (number > maxID) {
                     maxID = number;
                 }
             }
 
-        } catch (IOException e) {
-            // File may not exist yet — that's fine
+        } catch (Exception e) {
+            // file may not exist yet
         }
 
         nextQuotationID = maxID + 1;
+    }
+
+
+
+    public void saveToFile() {
+
+        String data =
+                quotationID + "," +
+                        customer.getCustomerID() + "," +
+                        customer.getPhoneNumber() + "," +
+                        vehicle.getReg() + "," +
+                        vehicle.getMake() + "," +
+                        vehicle.getModel() + "," +
+                        vehicle.getYear() + "," +
+                        finalPremium + "," +
+                        months;
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("quotations.txt", true))) {
+            writer.write(data);
+            writer.newLine();
+        }
+        catch (IOException e) {
+            System.out.println("Error saving quotation.");
+        }
     }
 
 }

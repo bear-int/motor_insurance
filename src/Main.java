@@ -177,10 +177,28 @@ public class Main {
                     System.out.println("1. Fully Comprehensive");
                     System.out.println("2. Third Party Fire and Theft");
 
+
                     int insuranceType = scanner.nextInt();
                     scanner.nextLine();
 
-                    Quotation quotation = new Quotation(selectedCustomer, selectedVehicle, insuranceType);
+                    while (insuranceType != 1 && insuranceType != 2) {
+                        System.out.print("Invalid option. Enter 1 or 2: ");
+                        insuranceType = scanner.nextInt();
+                        scanner.nextLine();
+                    }
+
+                    System.out.print("Enter policy period (1–12 months): ");
+                    int months = scanner.nextInt();
+                    scanner.nextLine();
+
+                    while (months < 1 || months > 12) {
+                        System.out.print("Invalid. Enter between 1 and 12 months: ");
+                        months = scanner.nextInt();
+                        scanner.nextLine();
+                    }
+
+                    Quotation quotation = new Quotation(selectedCustomer, selectedVehicle, insuranceType, months);
+
                     if (quotation.getFinalPremium() == -1) {
                         System.out.println("Quotation cannot be generated for this customer.");
                         break;
@@ -800,7 +818,7 @@ public class Main {
 
                 if (data.length < 8) continue; // safety check
 
-                LocalDate policyStart = LocalDate.parse(data[7]);
+                LocalDate policyStart = LocalDate.parse(data[8]);
 
                 if ((policyStart.isEqual(startDate) || policyStart.isAfter(startDate)) &&
                         (policyStart.isEqual(endDate) || policyStart.isBefore(endDate))) {
@@ -1134,13 +1152,16 @@ public class Main {
                 if (data[0].equalsIgnoreCase(quotationID)) {
 
                     String customerID = data[1];
-                    String reg = data[2];
-                    double premium = Double.parseDouble(data[6]);
+                    String phone = data[2];
+                    String reg = data[3];
+
+                    double premium = Double.parseDouble(data[7]);
+                    int months = Integer.parseInt(data[8]);
 
                     Customer quotationCustomer = findCustomerByID(customerID);
                     Vehicle quotationVehicle = findVehicleByReg(reg);
 
-                    Policy policy = new Policy(quotationCustomer, quotationVehicle, premium);
+                    Policy policy = new Policy(quotationCustomer, quotationVehicle, premium, phone, months);
                     policy.saveToFile();
 
                     System.out.println("\nPOLICY CREATED SUCCESSFULLY!");

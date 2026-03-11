@@ -13,15 +13,19 @@ public class Policy {
     private double premium;
     private LocalDate startDate;
     private LocalDate expiryDate;
+    private String phone;
 
-    public Policy(Customer customer, Vehicle vehicle, double premium) {
+    public Policy(Customer customer, Vehicle vehicle, double premium, String phone, int months) {
 
         this.policyID = String.format("POL-%04d", nextPolicyID++);
         this.customer = customer;
         this.vehicle = vehicle;
         this.premium = premium;
-        this.startDate = LocalDate.now();
-        this.expiryDate = startDate.plusYears(1);
+        this.phone = phone;
+
+        startDate = LocalDate.now();
+        expiryDate = startDate.plusMonths(months);
+
     }
 
     public String getPolicyDetails() {
@@ -38,18 +42,19 @@ public class Policy {
 
     public void saveToFile() {
 
-        String data = policyID + "," +
-                customer.getCustomerID() + "," +
-                vehicle.getReg() + "," +
-                vehicle.getMake() + "," +
-                vehicle.getModel() + "," +
-                vehicle.getYear() + "," +
-                premium + "," +
-                startDate + "," +
-                expiryDate;
+        String data =
+                policyID + "," +
+                        customer.getCustomerID() + "," +
+                        phone + "," +
+                        vehicle.getReg() + "," +
+                        vehicle.getMake() + "," +
+                        vehicle.getModel() + "," +
+                        vehicle.getYear() + "," +
+                        premium + "," +
+                        startDate + "," +
+                        expiryDate;
 
-        try (BufferedWriter writer =
-                     new BufferedWriter(new FileWriter("policies.txt", true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("policies.txt", true))) {
 
             writer.write(data);
             writer.newLine();
